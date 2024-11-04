@@ -10,6 +10,8 @@ All relevant code is in the folder titled code. Iterations.ipynb showed iteratio
 
 All relevant maps are in the folder titled maps.
 
+Our write up is titled chicago-group-2-assignment-3.pdf
+
 ## Results
 The output is in redistricting_output.txt with the results of our code. 
 
