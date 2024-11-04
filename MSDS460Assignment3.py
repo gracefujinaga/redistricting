@@ -1,19 +1,38 @@
 from pulp import LpProblem, LpVariable, lpSum, LpMinimize, LpBinary
 import pandas as pd
+import csv
+import random
 
-#Parsing the adjacency file to get the adjacency list
+#Parse adjacency file to get the adjacency list
 def parse_adjacency_file(file_path):
     adjacency_list = {}
-    with open(file_path, 'r', encoding='ISO-8859-1') as file: #Assisted with ChatGPT, did not know what encoding meant and got an error for this
-        current_county = None
+    current_county = None
+    
+    with open(file_path, 'r', encoding='ISO-8859-1') as file:
         for line in file:
-            if line.startswith('"'):
-                current_county = line.split("\t")[0].strip('"')
-                adjacency_list[current_county] = []
-            elif current_county:
-                neighbor = line.strip().split("\t")[0].strip('"')
-                adjacency_list[current_county].append(neighbor)
+            # Check if it's a main county line (no leading whitespace) and contains "IL"
+            if line.startswith('"') and "IL" in line:
+                # Extract the main county name and ensure it’s from Illinois
+                county_name = line.split("\t")[0].strip('"')
+                if "IL" in county_name:
+                    adjacency_list[county_name] = []
+                    current_county = county_name
+                else:
+                    current_county = None  # Ignore counties not in Illinois
+            
+            # If we have a current Illinois county, look for Illinois neighbors
+            elif current_county and line.startswith('\t') and "IL" in line:
+                # Only add neighboring counties in Illinois
+                neighbor_county = line.strip().split("\t")[0].strip('"')
+                if "IL" in neighbor_county:
+                    adjacency_list[current_county].append(neighbor_county)
+    
+    # Filter out any non-Illinois entries if they accidentally got included
+    adjacency_list = {county: neighbors for county, neighbors in adjacency_list.items() if "IL" in county}
+    
     return adjacency_list
+
+
 
 #Load pop data
 pop_data = pd.read_csv('pop_data.csv')
@@ -51,20 +70,53 @@ for d in districts:
 for county in counties:
     model += lpSum(x[(county, d)] for d in districts) == 1
 
-#Constraint 3: adjacent counties in the same district
+#Constraint 3: adjacency constraint to enforce contiguity
+MIN_NEIGHBORS_IN_SAME_DISTRICT = 2  # Increase this to enforce stronger contiguity
+
 for d in districts:
     for county in counties:
         neighbors = adjacency_list.get(county, [])
-        #If a county is assigned to a district, at least one of its neighbors must also be in the same district
+        #Require that each county assigned to a district has multiple neighbors in the same district
         if neighbors:
-            model += lpSum(x[(neighbor, d)] for neighbor in neighbors if neighbor in counties) >= x[(county, d)]
+            model += lpSum(x[(neighbor, d)] for neighbor in neighbors if neighbor in counties) >= MIN_NEIGHBORS_IN_SAME_DISTRICT * x[(county, d)]
+
+
 
 #Solve model
 model.solve()
 
-#Output
-print("Optimal County Assignments to Districts:")
+#Collect results and check for any unassigned counties
+district_assignments = {}
 for county in counties:
+    assigned_to_district = False
     for d in districts:
         if x[(county, d)].value() == 1:
-            print(f"{county} is assigned to District {d}")
+            district_assignments[county] = d
+            assigned_to_district = True
+    if not assigned_to_district:
+        print(f"Warning: {county} was not assigned to any district.")
+
+#printing and saving district assignments
+print("Optimal County Assignments to Districts:")
+for county in counties:
+    if county in district_assignments:
+        print(f"{county} is assigned to District {district_assignments[county]}")
+    else:
+        print(f"{county} is not assigned to any district")
+
+
+#Write output to txt file
+with open("redistricting_output.txt", "w") as f:
+    f.write("Optimal County Assignments to Districts:\n")
+    for county in counties:
+        for d in districts:
+            if x[(county, d)].value() == 1:
+                f.write(f"{county} is assigned to District {d}\n")
+
+
+#Turn districtr to csv so we can import into districtr
+with open("redistricting_districtr.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["County", "District"])
+    for county, district in district_assignments.items():
+        writer.writerow([county, district])
