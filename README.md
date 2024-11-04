@@ -1,7 +1,7 @@
 # redistricting
 MSDS 460 Assignment 3
 
-Grace Fujinaga, Kevin Ou, Timmy Li, John Leigh
+Grace Fujinaga, John Leigh, Timmy Li, Kevin Ou 
 
 ## Repo Organization
 All of the data, intermediate and used csv and txt files are in the folder titled Data. 
