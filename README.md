@@ -207,3 +207,33 @@ District 18:
 Connected Component 1: Alexander County, Pulaski County, Johnson County, Massac County, Pope County, Hardin County, Gallatin County, Saline County, Franklin County, Jackson County, Perry County, Jefferson County, Washington County, Randolph County, Monroe County, St. Clair County, Union County, Williamson County
 
 ## Iteration 5:
+give region 2 more districts
+define another region to keep mchenry connected 
+
+District 8:
+  Total Population: 648141
+Connected Component 1: Boone County, McHenry County, Winnebago County
+District 9:
+  Total Population: 648536
+Connected Component 1: Kane County, Kendall County
+District 10:
+  Total Population: 659948
+Connected Component 1: Bureau County, Henry County, Rock Island County, Whiteside County, Carroll County, Jo Daviess County, Stephenson County, Ogle County, DeKalb County, LaSalle County, Lee County
+District 11:
+  Total Population: 696826
+Connected Component 1: Will County
+District 12:
+  Total Population: 686681
+Connected Component 1: Champaign County, Ford County, Iroquois County, Kankakee County, Grundy County, Livingston County, McLean County, Vermilion County
+District 14:
+  Total Population: 404123
+Connected Component 1: Cass County, Mason County, Fulton County, Knox County, Mercer County, Henderson County, Hancock County, McDonough County, Schuyler County, Warren County, Stark County, Marshall County, Putnam County, Woodford County, Tazewell County, Menard County
+District 16:
+  Total Population: 650177
+Connected Component 1: Alexander County, Pulaski County, Johnson County, Massac County, Pope County, Hardin County, Gallatin County, Hamilton County, Franklin County, Jackson County, Perry County, Jefferson County, Washington County, Randolph County, Monroe County, St. Clair County, Union County, Williamson County, Saline County
+District 17:
+  Total Population: 637653
+Connected Component 1: Bond County, Clinton County, Fayette County, Clay County, Effingham County, Cumberland County, Clark County, Coles County, Douglas County, Edgar County, Moultrie County, Macon County, Christian County, Montgomery County, Shelby County, De Witt County, Logan County, Piatt County, Crawford County, Jasper County, Richland County, Edwards County, Wabash County, Lawrence County, White County, Wayne County, Marion County
+District 18:
+  Total Population: 668747
+Connected Component 1: Adams County, Brown County, Morgan County, Greene County, Calhoun County, Jersey County, Macoupin County, Madison County, Sangamon County, Pike County, Scott County

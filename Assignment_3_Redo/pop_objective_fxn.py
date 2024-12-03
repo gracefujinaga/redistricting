@@ -6,11 +6,6 @@ import random
 # use 2020 data
 pop_df = pd.read_csv('/Users/gracefujinaga/Documents/Northwestern/MSDS_460/redistricting/Assignment_3_Redo/Data/pop_data_2020.csv')
 
-# cook county - 7 districts
-# Dupage County - 1 district
-# Lake county - 1 district
-# thus, 102 - 3 = 99 counties
-# 17 - 9 = 8 districts
 def parse_illinois_counties_to_adjacency_list(file_path):
     adjacency_list = {}
     current_county = None
@@ -43,19 +38,19 @@ def parse_illinois_counties_to_adjacency_list(file_path):
                     adjacency_list[current_county].append(neighbor_county)
     
     return adjacency_list
-    
 
 # Parse the adjacency data file
 adj_list = parse_illinois_counties_to_adjacency_list('/Users/gracefujinaga/Documents/Northwestern/MSDS_460/redistricting/Assignment_3_Redo/Data/adjacency_data.txt')
 
+# Remove specified counties
 for county in ['Cook County', 'Lake County', 'DuPage County']:
     adj_list.pop(county)
 
-# Initialize model
+# Initialize the model
 model = LpProblem("Redistricting", LpMinimize)
 
 # Parameters
-districts = list(range(1, 9))  # 8 districts after we take out those listed above
+districts = list(range(1, 10))  # 9 districts after we take out the specified ones
 
 # Get counties
 counties = pop_df['name']
@@ -63,29 +58,25 @@ remove_counties = ['DuPage County', 'Lake County', 'Cook County']
 filtered_counties = counties[~counties.isin(remove_counties)]
 county_list = filtered_counties.tolist()
 
-# Get target population and start with the goal of minimizing the differences here
-target_population = sum(pop_df['pop2020'])/ 17  # this should be 17
+# Get target population
+target_population = sum(pop_df['pop2020']) / 18
 
-print(f"target population: {target_population}")
 
-## Kevin's Work
-
-# Decision variables
-x = LpVariable.dicts("Assign", [(county, d) for county in counties for d in districts], cat=LpBinary)
-
-# Deviation variables
+# Deviation variables for population balancing
 over_deviation = LpVariable.dicts("OverDev", districts, lowBound=0)
 under_deviation = LpVariable.dicts("UnderDev", districts, lowBound=0)
+
+# Decision variables for assigning counties to districts
+x = LpVariable.dicts("Assign", [(county, d) for county in counties for d in districts], cat=LpBinary)
 
 # Objective: Minimize population deviation
 model += lpSum(over_deviation[d] + under_deviation[d] for d in districts)
 
-# Constraints
-# 1. Each remaining county assigned to exactly one district
+# Constraints: Ensure each county is assigned to exactly one district
 for county in county_list:
     model += lpSum(x[(county, d)] for d in districts) == 1
 
-# 2. Population deviation constraints
+# Population deviation constraints for each district
 for d in districts:
     model += (
         lpSum(x[(county, d)] * pop_df.loc[pop_df['name'] == county, 'pop2020'].values[0] for county in county_list) - target_population
@@ -97,87 +88,70 @@ for d in districts:
         <= under_deviation[d]
     )
 
-# 3. Compactness
-# Adjacency constraint: For each county in the district, at least one other county in the district must be adjacent
-# Adding flow-like constraints to ensure connectedness
-y = LpVariable.dicts("Adjacency", [(i, j, d) for i in county_list for j in adj_list.get(i, []) for d in districts], cat=LpBinary)
+# # Connectivity Constraints
+# y = LpVariable.dicts("Adjacency", [(i, j, d) for i in county_list for j in adj_list.get(i, []) for d in districts], cat=LpBinary)
 
-# Adjacency constraint for all counties in a district to be adjacent to at least one other county in the same district
+# # Ensure if a county is assigned to a district, its neighbors must be assigned to the same district (and vice versa)
 # for county in county_list:
 #     for d in districts:
 #         for neighbor in adj_list.get(county, []):
-#             # Generate a unique constraint name for each adjacency pair and district
-#             constraint_name_1 = f"Adjacency_{county}_{neighbor}_District_{d}_1"
-#             constraint_name_2 = f"Adjacency_{neighbor}_{county}_District_{d}_2"
-#             constraint_name_3 = f"Adjacency_connectivity_{county}_{neighbor}_District_{d}"
-
 #             model += (
-#                 y[(county, neighbor, d)] <= x[(county, d)], 
-#                 constraint_name_1
+#                 y[(county, neighbor, d)] <= x[(county, d)],  # If county is assigned to district, neighbor must also be assigned
+#                 f"Adjacency_1_{county}_{neighbor}_District_{d}"
 #             )
 #             model += (
-#                 y[(county, neighbor, d)] <= x[(neighbor, d)], 
-#                 constraint_name_2
+#                 y[(county, neighbor, d)] <= x[(neighbor, d)],  # If neighbor is assigned to district, county must also be assigned
+#                 f"Adjacency_2_{county}_{neighbor}_District_{d}"
 #             )
 #             model += (
-#                 y[(county, neighbor, d)] >= x[(county, d)] + x[(neighbor, d)] - 1, 
-#                 constraint_name_3
+#                 y[(county, neighbor, d)] >= x[(county, d)] + x[(neighbor, d)] - 1,  # If one is assigned, the other must be too
+#                 f"Adjacency_connectivity_{county}_{neighbor}_District_{d}"
 #             )
 
-# Correct Adjacency Constraints
-for county in county_list:
-    for d in districts:
-        for neighbor in adj_list.get(county, []):
-            # Generate a unique constraint name for each adjacency pair and district
-            constraint_name_1 = f"Adjacency_{county}_{neighbor}_District_{d}_1"
-            constraint_name_2 = f"Adjacency_{neighbor}_{county}_District_{d}_2"
-            constraint_name_3 = f"Adjacency_connectivity_{county}_{neighbor}_District_{d}"
-
-            # Ensure if county is assigned to the district, the neighbor is also assigned to the same district
-            model += (
-                y[(county, neighbor, d)] <= x[(county, d)], 
-                constraint_name_1
-            )
-            model += (
-                y[(county, neighbor, d)] <= x[(neighbor, d)], 
-                constraint_name_2
-            )
-            model += (
-                y[(county, neighbor, d)] >= x[(county, d)] + x[(neighbor, d)] - 1, 
-                constraint_name_3
-            )
-
-
-# # Connectivity flow constraints: Ensuring connected components in the district
+# # Flow constraints to ensure connectedness
 # for county in county_list:
 #     for d in districts:
-#         # Unique name for each flow constraint
 #         flow_constraint_name = f"Flow_{county}_District_{d}"
 #         model += (
-#             lpSum(y[(county, neighbor, d)] for neighbor in adj_list.get(county, [])) >= x[(county, d)], 
+#             lpSum(y[(county, neighbor, d)] for neighbor in adj_list.get(county, [])) >= x[(county, d)],  # Propagate flow from county to neighbors
 #             flow_constraint_name
 #         )
 
-# Connectivity flow constraints
-for county in county_list:
-    for d in districts:
-        flow_constraint_name = f"Flow_{county}_District_{d}"
-        model += (
-            lpSum(y[(county, neighbor, d)] for neighbor in adj_list.get(county, [])) >= x[(county, d)], 
-            flow_constraint_name
-        )
+
+# Binary decision variables: y[(county1, county2, d)] = 1 if county1 and county2 are connected in district d
+y = LpVariable.dicts("Connected", [(county1, county2, d) for county1 in county_list for county2 in adj_list.get(county1, []) for d in districts], cat=LpBinary)
+
+
+# add connectivity 
+for county1 in county_list:
+    for county2 in adj_list.get(county1, []):  # Only consider neighbors
+        if county1 < county2 and county2 in county_list:  # Ensure unique pairs
+            for d in districts:
+                # If county1 and county2 are assigned to the same district, there should be a connection
+                model += y[(county1, county2, d)] <= x[(county1, d)], f"Connection_1_{county1}_{county2}_District_{d}"
+                model += y[(county1, county2, d)] <= x[(county2, d)], f"Connection_2_{county1}_{county2}_District_{d}"
+                model += y[(county1, county2, d)] >= x[(county1, d)] + x[(county2, d)] - 1, f"Connection_3_{county1}_{county2}_District_{d}"
+
+
+# Enforce connectivity: If county1 and county2 are both assigned to the same district, they must be connected
+for d in districts:
+    for county1 in county_list:
+        for county2 in adj_list.get(county1, []):
+            if county1 < county2 and county2 in county_list:  # Ensure unique pairs
+                # Enforce connectivity directly
+                model += x[(county1, d)] + x[(county2, d)] <= 1, f"Direct_Connection_{county1}_{county2}_District_{d}"
 
 
 
-# Solve model
+# Solve the model
 model.solve()
 
 # Output results
 print("\nPre-assigned Districts:")
 assigned_districts = {
-    'Cook County': list(range(9, 16)),
-    'DuPage County' : [16],
-    'Lake County' : [17]
+    'Cook County': list(range(10, 17)),
+    'DuPage County' : [17],
+    'Lake County' : [18]
 }
 
 for county in remove_counties:

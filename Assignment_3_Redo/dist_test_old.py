@@ -55,8 +55,8 @@ def one_region(districts, adj_list, populations, units ) :
     # Get target population based on the two counties
     target_population = sum(pop_df['pop2020']) / 18
 
-    lower_bound = target_population - target_population * 0.15 # 15% lower bound
-    upper_bound = target_population + target_population * 0.15  # 15% upper bound
+    lower_bound = target_population - target_population * 0.1 # 15% lower bound
+    upper_bound = target_population + target_population * 0.1   # 15% upper bound
 
     # Decision variables
     x = LpVariable.dicts("Assign", [(i, j) for i in units for j in districts], cat=LpBinary)
@@ -144,31 +144,16 @@ def filter_adjacency_list(adj_list, filter_keys):
 # now prep for each region
 region_1 = "Cook County"
 
-# removed dupage and lake
 ## added everything  efore Jo Daviess
-## iteration 5: added everuthing before henry
-## added before iroquois\
+region_2 = "Henry County, Bureau County, Livingston County, LaSalle County, Jo Daviess County, Stephenson County, Winnebago County, Boone County, McHenry County, Carroll County, Ogle County, DeKalb County, Kane County, Whiteside County, Lee County, Kendall County, Grundy County, Will County, Kankakee County" # removed dupage and lake
 
-## remove these from the rest of region 2
-# for the purpose of this, rename this to region_1 -- tweak and fix later
-# region_1 = "Boone County, McHenry County, Winnebago County"
+## added everything before rock island
+region_3 = "Hancock County, Schuyler County, Cass County, Menard County, Rock Island County, Mercer County, Iroquois County, Henderson County, Warren County, Knox County, Stark County, Putnam County, Marshall County, Ford County, Vermilion County, Champaign County, McLean County, Woodford County, Tazewell County, Mason County, Peoria County, Fulton County, McDonough County"
+# Hancock County, Schuyler County,Cass County, Menard County,
+region_4 = "Adams County, Brown County, Logan County, De Witt County, Piatt County, Douglas County, Edgar County, Clark County, Coles County, Cumberland County, Effingham County, Shelby County, Moultrie County, Macon County, Christian County, Montgomery County, Sangamon County, Morgan County, Macoupin County, Greene County, Jersey County, Calhoun County, Scott County, Pike County, Madison County, Bond County, Fayette County, Clay County, Jasper County, Crawford County, Lawrence County, Richland County, Edwards County, Wabash County, Wayne County, Marion County, Clinton County, St. Clair County, Monroe County, Randolph County, Washington County, Jefferson County, Perry County, Jackson County, Franklin County, Hamilton County, White County, Williamson County, Saline County, Union County, Johnson County, Pope County, Hardin County, Alexander County, Pulaski County, Massac County, Gallatin County"
 
+# region_5 = "Madison County, Bond County, Fayette County, Clay County, Jasper County, Crawford County, Lawrence County, Richland County, Edwards County, Wabash County, Wayne County, Marion County, Clinton County, St. Clair County, Monroe County, Randolph County, Washington County, Jefferson County, Perry County, Jackson County, Franklin County, Hamilton County, White County, Williamson County, Saline County, Union County, Johnson County, Pope County, Hardin County, Alexander County, Pulaski County, Massac County, Gallatin County"
 
-# region_2 = "Henry County, Bureau County, McLean County, Ford County, Iroquois County, Vermilion County, Champaign County, Livingston County, LaSalle County, Jo Daviess County, Stephenson County, Carroll County, Ogle County, DeKalb County, Kane County, Whiteside County, Lee County, Kendall County, Grundy County, Will County, Kankakee County"
-
-# ## added everything before rock island
-# region_3 = "Hancock County, Schuyler County, Cass County, Menard County, Rock Island County, Mercer County, Henderson County, Warren County, Knox County, Stark County, Putnam County, Marshall County, Woodford County, Tazewell County, Mason County, Peoria County, Fulton County, McDonough County"
-# # Hancock County, Schuyler County,Cass County, Menard County,
-# region_4 = "Adams County, Brown County, Logan County, De Witt County, Piatt County, Douglas County, Edgar County, Clark County, Coles County, Cumberland County, Effingham County, Shelby County, Moultrie County, Macon County, Christian County, Montgomery County, Sangamon County, Morgan County, Macoupin County, Greene County, Jersey County, Calhoun County, Scott County, Pike County, Madison County, Bond County, Fayette County, Clay County, Jasper County, Crawford County, Lawrence County, Richland County, Edwards County, Wabash County, Wayne County, Marion County, Clinton County, St. Clair County, Monroe County, Randolph County, Washington County, Jefferson County, Perry County, Jackson County, Franklin County, Hamilton County, White County, Williamson County, Saline County, Union County, Johnson County, Pope County, Hardin County, Alexander County, Pulaski County, Massac County, Gallatin County"
-
-# # region_5 = "Madison County, Bond County, Fayette County, Clay County, Jasper County, Crawford County, Lawrence County, Richland County, Edwards County, Wabash County, Wayne County, Marion County, Clinton County, St. Clair County, Monroe County, Randolph County, Washington County, Jefferson County, Perry County, Jackson County, Franklin County, Hamilton County, White County, Williamson County, Saline County, Union County, Johnson County, Pope County, Hardin County, Alexander County, Pulaski County, Massac County, Gallatin County"
-
-
-#region_1 = "Cook County"
-region_1 = "Boone County, McHenry County, Winnebago County"
-region_2 = "Rock Island County, Henry County, Bureau County, LaSalle County, Jo Daviess County, Stephenson County, Carroll County, Ogle County, DeKalb County, Kane County, Whiteside County, Lee County, Kendall County, Grundy County, Will County, Kankakee County"
-region_3 = "Mercer County, Henderson County, Warren County, Knox County, Stark County, Putnam County, Marshall County, Livingston County, Ford County, Iroquois County, Vermilion County, Champaign County, McLean County, Woodford County, Tazewell County, Mason County, Peoria County, Fulton County, McDonough County"
-region_4 = "Hancock County, Adams County, Schuyler County, Brown County, Cass County, Menard County, Logan County, De Witt County, Piatt County, Douglas County, Edgar County, Clark County, Coles County, Cumberland County, Effingham County, Shelby County, Moultrie County, Macon County, Christian County, Montgomery County, Sangamon County, Morgan County, Macoupin County, Greene County, Jersey County, Calhoun County, Scott County, Pike County, Madison County, Bond County, Fayette County, Clay County, Jasper County, Crawford County, Lawrence County, Richland County, Edwards County, Wabash County, Wayne County, Marion County, Clinton County, St. Clair County, Monroe County, Randolph County, Washington County, Jefferson County, Perry County, Jackson County, Franklin County, Hamilton County, White County, Williamson County, Saline County, Union County, Johnson County, Pope County, Hardin County, Alexander County, Pulaski County, Massac County, Gallatin County"
 
 '''
 From above, we see the following mapping:
@@ -180,9 +165,8 @@ From above, we see the following mapping:
 '''
 
 region_district_num_dict = {
-    #1 : list(range(1, 1 + 7)),
-    1: [8],
-    2 : list(range(9, 11 + 1)), # also 12, 13 for dupage and lake
+    1 : list(range(1, 1 + 7)),
+    2 : list(range(8, 1+ 7 + 4)), # also 12, 13
     3: list(range(1+ 7 + 6, 1+ 7 + 6 + 2)),
     4 : list (range(1+ 7 + 6 + 2, 1+ 7 + 6 + 2 +1 + 2))
     # 4: list(range(1+ 7 + 6 + 2, 1+ 7 + 6 + 2 + 1)),
@@ -194,14 +178,14 @@ region_county_dict = {
     2: region_2.split(", "),
     3: region_3.split(", "),
     4: region_4.split(", "),
-    #5: region_5.split(", ")
+    # 5: region_5.split(", ")
 }
 
 populations = dict(zip(pop_df['name'], pop_df['pop2020']))
 
 #for region in list(range(2, 6)):
 dict_list = []
-for region in [1, 2, 3, 4]:
+for region in [2, 3, 4]:
     counties = region_county_dict[region]
     print(counties)
 
