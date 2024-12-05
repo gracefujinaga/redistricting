@@ -169,8 +169,6 @@ region_district_num_dict = {
     2 : list(range(8, 1+ 7 + 4)), # also 12, 13
     3: list(range(1+ 7 + 6, 1+ 7 + 6 + 2)),
     4 : list (range(1+ 7 + 6 + 2, 1+ 7 + 6 + 2 +1 + 2))
-    # 4: list(range(1+ 7 + 6 + 2, 1+ 7 + 6 + 2 + 1)),
-    # 5: list(range(1+ 7 + 6 + 2 + 1, 1+ 7 + 6 + 2 +1 + 2))
 }
 
 region_county_dict = {
@@ -178,7 +176,6 @@ region_county_dict = {
     2: region_2.split(", "),
     3: region_3.split(", "),
     4: region_4.split(", "),
-    # 5: region_5.split(", ")
 }
 
 populations = dict(zip(pop_df['name'], pop_df['pop2020']))
@@ -186,6 +183,7 @@ populations = dict(zip(pop_df['name'], pop_df['pop2020']))
 #for region in list(range(2, 6)):
 dict_list = []
 for region in [2, 3, 4]:
+#for region in [3]:
     counties = region_county_dict[region]
     print(counties)
 

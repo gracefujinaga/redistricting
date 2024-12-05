@@ -180,7 +180,6 @@ From above, we see the following mapping:
 '''
 
 region_district_num_dict = {
-    #1 : list(range(1, 1 + 7)),
     1: [8],
     2 : list(range(9, 11 + 1)), # also 12, 13 for dupage and lake
     3: list(range(1+ 7 + 6, 1+ 7 + 6 + 2)),

@@ -1,0 +1,35 @@
+Note: missing Tazewell county
+District 1 - 7: Cook County
+
+District 8:
+  Total Population: 711160
+Connected Component 1: Bureau County, Henry County, Whiteside County, Carroll County, Jo Daviess County, Stephenson County, Ogle County, DeKalb County, LaSalle County, Grundy County, Kankakee County, Livingston County, Lee County
+District 9:
+  Total Population: 696826
+Connected Component 1: Will County
+District 10:
+  Total Population: 648141
+Connected Component 1: Boone County, McHenry County, Winnebago County
+District 11:
+  Total Population: 648536
+Connected Component 1: Kane County, Kendall County
+
+District 12: DuPage County
+
+District 13: Lake County
+
+District 14:
+  Total Population: 491109
+Connected Component 1: Champaign County, Ford County, Iroquois County, Vermilion County, McLean County
+District 15:
+  Total Population: 565229
+Connected Component 1: Cass County, Mason County, Menard County, Schuyler County, Hancock County, Henderson County, McDonough County, Warren County, Knox County, Mercer County, Rock Island County, Peoria County, Marshall County, Putnam County, Stark County, Woodford County
+District 16:
+  Total Population: 668747
+Connected Component 1: Adams County, Brown County, Morgan County, Greene County, Calhoun County, Jersey County, Macoupin County, Madison County, Sangamon County, Pike County, Scott County
+District 17:
+  Total Population: 645652
+Connected Component 1: Bond County, Clinton County, Fayette County, Clay County, Effingham County, Cumberland County, Clark County, Coles County, Douglas County, Edgar County, Moultrie County, Macon County, Christian County, Montgomery County, Shelby County, De Witt County, Logan County, Piatt County, Crawford County, Jasper County, Richland County, Edwards County, Wabash County, Lawrence County, White County, Hamilton County, Wayne County, Marion County
+District 18:
+  Total Population: 642178
+Connected Component 1: Alexander County, Pulaski County, Johnson County, Massac County, Pope County, Hardin County, Gallatin County, Saline County, Franklin County, Jackson County, Perry County, Jefferson County, Washington County, Randolph County, Monroe County, St. Clair County, Union County, Williamson County
