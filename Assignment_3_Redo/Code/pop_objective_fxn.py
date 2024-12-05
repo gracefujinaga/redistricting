@@ -61,7 +61,6 @@ county_list = filtered_counties.tolist()
 # Get target population
 target_population = sum(pop_df['pop2020']) / 18
 
-
 # Deviation variables for population balancing
 over_deviation = LpVariable.dicts("OverDev", districts, lowBound=0)
 under_deviation = LpVariable.dicts("UnderDev", districts, lowBound=0)
@@ -84,38 +83,9 @@ for d in districts:
     )
     model += (
         target_population
-        - lpSum(x[(county, d)] * pop_df.loc[pop_df['name'] == county, 'pop2020'].values[0] for county in county_list)
+        - lpSum(x[(county, d)] * pop_df.loc[pop_df['name'] == county, 'pop2020'].values[0] for county in county_list) 
         <= under_deviation[d]
     )
-
-# # Connectivity Constraints
-# y = LpVariable.dicts("Adjacency", [(i, j, d) for i in county_list for j in adj_list.get(i, []) for d in districts], cat=LpBinary)
-
-# # Ensure if a county is assigned to a district, its neighbors must be assigned to the same district (and vice versa)
-# for county in county_list:
-#     for d in districts:
-#         for neighbor in adj_list.get(county, []):
-#             model += (
-#                 y[(county, neighbor, d)] <= x[(county, d)],  # If county is assigned to district, neighbor must also be assigned
-#                 f"Adjacency_1_{county}_{neighbor}_District_{d}"
-#             )
-#             model += (
-#                 y[(county, neighbor, d)] <= x[(neighbor, d)],  # If neighbor is assigned to district, county must also be assigned
-#                 f"Adjacency_2_{county}_{neighbor}_District_{d}"
-#             )
-#             model += (
-#                 y[(county, neighbor, d)] >= x[(county, d)] + x[(neighbor, d)] - 1,  # If one is assigned, the other must be too
-#                 f"Adjacency_connectivity_{county}_{neighbor}_District_{d}"
-#             )
-
-# # Flow constraints to ensure connectedness
-# for county in county_list:
-#     for d in districts:
-#         flow_constraint_name = f"Flow_{county}_District_{d}"
-#         model += (
-#             lpSum(y[(county, neighbor, d)] for neighbor in adj_list.get(county, [])) >= x[(county, d)],  # Propagate flow from county to neighbors
-#             flow_constraint_name
-#         )
 
 
 # Binary decision variables: y[(county1, county2, d)] = 1 if county1 and county2 are connected in district d
@@ -140,7 +110,6 @@ for d in districts:
             if county1 < county2 and county2 in county_list:  # Ensure unique pairs
                 # Enforce connectivity directly
                 model += x[(county1, d)] + x[(county2, d)] <= 1, f"Direct_Connection_{county1}_{county2}_District_{d}"
-
 
 
 # Solve the model

@@ -90,7 +90,7 @@ Still had districts that weren't completely connected. Started moving districts 
  4: [16, 17, 18]}
 
 ## Iteration 5: Final iteration
-15% population deviation constraint
+10% population deviation constraint
 {1: [1, 2, 3, 4, 5, 6, 7], 
  2: [8, 9, 10, 11], 
  3: [14, 15], 
