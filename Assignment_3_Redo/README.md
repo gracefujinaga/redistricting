@@ -1,23 +1,22 @@
 # redistricting
 MSDS 460 Assignment 3 - redo assignment
-
 Grace Fujinaga, John Leigh, Timmy Li, Kevin Ou 
 
-## Repo Organization
+# Repo Organization
 All of the data, intermediate and used csv and txt files are in the folder titled Data. 
 
 All relevant code is in the folder titled code. Data_preprocesing.ipynb has data preprocessing steps. dist_objective_fxn.py has the code for building a map using min cut edge as the objective function. pop_objective_fxn.py has the code for building a map using even population size as the objective function. 
 
-## Results
+# Results
 The results folder has all of the outputs. 
 
 Our write up is titled chicago-group-2-assignment-3.pdf
 
 
-## Maps
+# Maps
 Actual Districts: https://districtr.org/plan/261378
-Our Solution: https://districtr.org/plan/261382
-
+Our Original Solution: https://districtr.org/plan/261382
+Our Second Solution: https://districtr.org/plan/270599
 
 
 # Notes about using the min cut objective function:
