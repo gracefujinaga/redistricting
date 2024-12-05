@@ -1,0 +1,7 @@
+"Clinton County, IL"	17027	"Bond County, IL"	17005
+		"Clinton County, IL"	17027
+		"Fayette County, IL"	17051
+		"Madison County, IL"	17119
+		"Marion County, IL"	17121
+		"St. Clair County, IL"	17163
+		"Washington County, IL"	17189

@@ -1,0 +1,21 @@
+District 1: Population = 646393
+Counties assigned: Calhoun County, Effingham County, Fulton County, Macoupin County, Massac County, Moultrie County, St. Clair County, Stephenson County, Union County, Vermilion County, White County, Whiteside County, Woodford County
+District 2: Population = 604883
+Counties assigned: Adams County, Boone County, Edwards County, Henderson County, Jasper County, Jefferson County, Lee County, Macon County, Madison County, Saline County
+District 3: Population = 532920
+Counties assigned: Carroll County, De Witt County, Douglas County, Hardin County, Marion County, Marshall County, Mason County, McHenry County, Mercer County, Morgan County, Perry County, Richland County, Shelby County
+District 4: Population = 689091
+Counties assigned: Bureau County, Cass County, Crawford County, Fayette County, Ford County, Gallatin County, Grundy County, Jackson County, Johnson County, Monroe County, Pike County, Tazewell County, Winnebago County
+District 5: Population = 707368
+Counties assigned: Pulaski County, Stark County, Will County
+District 6: Population = 664205
+Counties assigned: Bond County, Coles County, LaSalle County, McDonough County, Ogle County, Rock Island County, Sangamon County, Scott County, Williamson County
+District 7: Population = 709909
+Counties assigned: Brown County, Champaign County, Clark County, Clinton County, DeKalb County, Franklin County, Hancock County, Jersey County, Jo Daviess County, Kankakee County, Knox County, Lawrence County, Menard County, Montgomery County, Pope County, Randolph County
+District 8: Population = 678255
+Counties assigned: Alexander County, Christian County, Cumberland County, Edgar County, Henry County, Iroquois County, Kendall County, McLean County, Peoria County, Schuyler County, Wabash County, Warren County, Wayne County
+District 9: Population = 649127
+Counties assigned: Clay County, Greene County, Hamilton County, Kane County, Livingston County, Logan County, Piatt County, Putnam County, Washington County
+District 10: DuPage County
+District 11: Lake County
+Districts 12-18: Cook County
